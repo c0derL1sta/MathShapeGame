@@ -6,10 +6,11 @@ class player(pygame.sprite.Sprite):
     """moves a clenched fist on the screen, following the mouse"""
 
     def __init__(self, game, xPos, yPos):
-        pygame.sprite.Sprite.__init__(self)  # call Sprite initializer
-        self.image, self.rect = pygame.rect
-        self.fist_offset = (-235, -80)
-        self.punching = False
+        # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([50,50])
+        self.image.fill([255,0,0])
+        self.rect = self.image.get_rect()
 
         self.game = game
         self.x = xPos
