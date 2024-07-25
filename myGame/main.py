@@ -2,6 +2,8 @@
 import os
 import pygame
 import player
+import sys
+import random
 
 class game:
     def __init__(self):
@@ -29,8 +31,33 @@ class game:
         #Clock fature
         self.clock = pygame.time.Clock()
 
-    def test_say_hi():
-        print("yeet")
+        #Random Timer 1: This will activate randomly every 3 to 10 seconds
+        # Define a custom event type for the timer
+        self.TIMER_EVENT = pygame.USEREVENT + 1
+
+        # Define the range for the 2nd attack delay timer (in milliseconds)
+        self.MIN_INTERVAL = 250  # Minimum interval (3 second)
+        self.MAX_INTERVAL = 1000  # Maximum interval (8 seconds) 
+
+        self.isAtk = False
+
+    """
+    Code for the first random timer, this is the timer that activate every so ofter
+    that will start the attack process, this will spawn the atk node and 1 hint node
+    starting the process
+    """
+    def set_random_timer(self):
+        interval = random.randint(self.MIN_INTERVAL, self.MAX_INTERVAL)
+        pygame.time.set_timer(self.TIMER_EVENT, interval)
+
+    #Setup for the 2nd timer when the first timer activates 
+    def timer_callback(self):
+        print("Random timer triggered!AKAK ATTACK PROCESS NOW")
+        #Make sure theres only one attack
+        self.isAtk = True
+
+        #Check if the attack is done to activate the attack process again
+
 
     def main(self):
         """this function is called when the program starts.
@@ -39,6 +66,9 @@ class game:
 
         # Main Loop
         playing = True
+
+        self.set_random_timer() #Starts the first random timer that is an event
+
         while playing:
             self.clock.tick(60)
 
@@ -48,9 +78,14 @@ class game:
                     playing = False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     playing = False
-                
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
-                    pass
+                elif event.type == self.TIMER_EVENT:
+                    self.timer_callback() 
+
+            if not self.isAtk:
+                #If theres no attack do the attack thingy
+                self.set_random_timer() #Starts the first random timer that is an event
+
+            print(self.TIMER_EVENT)
 
             # Draw Everything
             #first the screen then sprites ontop
