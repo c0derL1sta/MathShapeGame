@@ -15,40 +15,27 @@ class game:
         pygame.mouse.set_visible(False)
 
         # Create The Background
-        background = pygame.Surface(self.screen.get_size())
-        background = background.convert()
-        background.fill((170, 238, 187))
+        self.background = pygame.Surface(self.screen.get_size())
+        self.background = self.background.convert()
+        self.background.fill((170, 238, 187))
 
-        # Display The Background
-        self.screen.blit(background, (0, 0))
-        pygame.display.flip()
 
-        #render player sprite?
-        self.player = player.player(self,900,800)
+        #Create the sprite
+        self.player = player.player(self,0,0)
+
+        #Put sprites into groups to render
+        self.allsprites = pygame.sprite.Group((self.player))
+
+        #Clock fature
         self.clock = pygame.time.Clock()
+
+    def test_say_hi():
+        print("yeet")
 
     def main(self):
         """this function is called when the program starts.
         it initializes everything it needs, then runs in
         a loop until the function returns."""
-        # Initialize Everything
-        pygame.init()
-        self.screen = pygame.display.set_mode((1000, 800))
-        pygame.display.set_caption("Math Shape survival")
-        pygame.mouse.set_visible(False)
-
-        # Create The Background
-        self.background = pygame.Surface(self.screen.get_size())
-        self.background = self.background.convert()
-        self.background.fill((170, 238, 187))
-
-        # Display The Background
-        self.screen.blit(self.background, (0, 0))
-        pygame.display.flip()
-
-        #render spirte?
-        self.allsprites = pygame.sprite.RenderPlain((self.player))
-
 
         # Main Loop
         playing = True
@@ -61,18 +48,20 @@ class game:
                     playing = False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     playing = False
-
-            #Update all them sprites
-            self.allsprites.update()
+                
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
+                    pass
 
             # Draw Everything
+            #first the screen then sprites ontop
             self.screen.blit(self.background, (0, 0))
+            self.allsprites.update() #Update all them sprites
             self.allsprites.draw(self.screen)
             pygame.display.flip()
 
-        playing.quit()
+        pygame.quit()
 
 
 g = game()
 g.main()
-os.exit()
+os._exit(0)
