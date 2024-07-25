@@ -14,17 +14,19 @@ class player(pygame.sprite.Sprite):
         self.x = xPos
         self.y = yPos
 
+        self.playerSpeed = 15
+
     def move(self):
         # Handle Input Events
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            self.y -= 50
+            self.y -= self.playerSpeed
         if keys[pygame.K_s]:
-            self.y += 50
+            self.y += self.playerSpeed
         if keys[pygame.K_a]:
-            self.x -= 50
+            self.x -= self.playerSpeed
         if keys[pygame.K_d]:
-            self.x += 50
+            self.x += self.playerSpeed
     
     def preventLeavingScreen(self):
         #A prevention measure to keep player inside the 'screen' and not going out of sight
@@ -34,16 +36,16 @@ class player(pygame.sprite.Sprite):
             self.x = 0
         
         #Dont go to far right , subtract player's width so it doesnt look part of it is off the screen
-        elif(self.x > 1000):
-            self.x = 1000 - self.image.get_width()
+        if(self.x > 950):
+            self.x = 950
         
         #Dont go to far up, 
-        elif(self.y < 0):
+        if(self.y < 0):
             self.y = 0
         
         #Dont go to far down, subtract player's height so it doesnt look a part of it is off
-        elif(self.y > 800):
-            self.y = 800 - self.image.get_height()
+        if(self.y > 750):
+            self.y = 750
 
 
     def update(self):
