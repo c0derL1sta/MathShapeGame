@@ -5,6 +5,8 @@ import player
 import sys
 import random
 
+from config import *
+
 class game:
     def __init__(self):
         """this function is called when the program starts.
@@ -12,14 +14,14 @@ class game:
         a loop until the function returns."""
         # Initialize Everything
         pygame.init()
-        self.screen = pygame.display.set_mode((1000, 800))
+        self.screen = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
         pygame.display.set_caption("Math Shape survival")
         pygame.mouse.set_visible(False)
 
         # Create The Background
         self.background = pygame.Surface(self.screen.get_size())
         self.background = self.background.convert()
-        self.background.fill((170, 238, 187))
+        self.background.fill(GREEN)
 
 
         #Create the sprite
@@ -28,7 +30,7 @@ class game:
         #Put sprites into groups to render
         self.allsprites = pygame.sprite.Group((self.player))
 
-        #Clock fature
+        #Clock feature
         self.clock = pygame.time.Clock()
 
         #Random Timer 1: This will activate randomly every 3 to 10 seconds
@@ -36,8 +38,8 @@ class game:
         self.TIMER_EVENT = pygame.USEREVENT + 1
 
         # Define the range for the 2nd attack delay timer (in milliseconds)
-        self.MIN_INTERVAL = 250  # Minimum interval (3 second)
-        self.MAX_INTERVAL = 1000  # Maximum interval (8 seconds) 
+        self.MIN_INTERVAL = 3000  # Minimum interval (3 second)
+        self.MAX_INTERVAL = 8000  # Maximum interval (8 seconds) 
 
         self.isAtk = False
 
@@ -47,16 +49,26 @@ class game:
     starting the process
     """
     def set_random_timer(self):
+        #print("1") #this func is called
         interval = random.randint(self.MIN_INTERVAL, self.MAX_INTERVAL)
         pygame.time.set_timer(self.TIMER_EVENT, interval)
 
     #Setup for the 2nd timer when the first timer activates 
+    #This is the func that starts the attack thing
     def timer_callback(self):
-        print("Random timer triggered!AKAK ATTACK PROCESS NOW")
+        #print("3") #Func works
+        #print("Random timer triggered!AKAK ATTACK PROCESS NOW")
+
         #Make sure theres only one attack
         self.isAtk = True
 
-        #Check if the attack is done to activate the attack process again
+        #Setup vars for the attack thing
+        atkXpos = random.randint(0, SCREEN_WIDTH)
+        atkYPos = random.randint(0, SCREEN_HEIGHT)
+
+        #Start the attack
+        #call the main Atk object
+        #Input: Random Xpos and Ypos
 
 
     def main(self):
@@ -78,14 +90,23 @@ class game:
                     playing = False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     playing = False
-                elif event.type == self.TIMER_EVENT:
-                    self.timer_callback() 
+                if event.type == self.TIMER_EVENT:
+                    if not self.isAtk:
+                        self.timer_callback()
+                        #print("2") #Func not called which means no timer
+                    else:
+                        #print("No attky ")
+                        pass
+            """"
+            Call the is Atk done func that does all of this
+            Check if the attack object is done 
+            Check if the attack is done to activate the attack process again
+            if self.manatkObj.getIsCompleted() <-this should return a bool: self.isAtk = false
+            or self.isAtk = the opposite of self.manatkObj.getIsCompleted()
+            getIscomplete = true which means its done making isAtk false
+            and vice versa
+            """
 
-            if not self.isAtk:
-                #If theres no attack do the attack thingy
-                self.set_random_timer() #Starts the first random timer that is an event
-
-            print(self.TIMER_EVENT)
 
             # Draw Everything
             #first the screen then sprites ontop
